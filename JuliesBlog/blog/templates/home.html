@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+		<main>
+			<section class="latest-posts">
+				{% for post in latest %}
+					<div class="post-card">
+						<img src="{{post.header_image}}" alt="post picture" />	
+						<div>
+							<a href="{{post.get_absolute_url}}"><h3>{{ post.title }}</h3></a>	
+							<p>{{ post.summary }}</p>
+							<a href="{{post.get_absolute_url}}">Read More</a>
+						</div>
+					</div>
+				{% endfor %}
+			</section>
+			<aside>
+			</aside>
+		</main>
+		<footer>
+		</footer>
+{% endblock content %}

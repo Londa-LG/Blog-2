@@ -1,12 +1,27 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
-
+from blog.models import Post
 
 def Blog_Home(request):
-	return HttpResponse("<h1>Blog home page</h1>")
+	latest_posts = Post.objects.order_by("-date")[:5]
+
+	context = {
+		"latest": latest_posts
+	}
+	return render(request,'home.html',context)
 
 def Blog_Posts(request):
-	return HttpResponse("<h1>Posts view</h1>")
+	post_objs = Post.objects.all()
 
-def Blog_Post(request):
-	return HttpResponse("<h1>Read Post</h1>")
+	context = {
+		"posts" : post_objs
+	}
+	return render(request,'posts.html',context)
+
+def Blog_Post(request,post):
+	post_obj = get_object_or_404(Post, slug=post)
+
+	context = {
+		'post': post_obj
+	}
+	return render(request,'post.html',context)

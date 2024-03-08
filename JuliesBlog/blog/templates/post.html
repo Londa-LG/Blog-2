@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+		<main>				
+			{{post.title}}
+			<img src="{{post.header_image}}" alt="header image" />
+			<p>Author: {{post.author}} | date: {{post.date}}</p>
+			<p>{{post.post_data}}</p>
+		</main>
+{% endblock content %}

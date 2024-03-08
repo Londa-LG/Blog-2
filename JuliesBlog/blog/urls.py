@@ -18,8 +18,10 @@ from django.contrib import admin
 from django.urls import path, include
 from blog import views
 
+app_name="Blog"
+
 urlpatterns = [
 	path("", views.Blog_Home, name="homepage"),
 	path("posts/", views.Blog_Posts, name="posts"),
-	path("post/", views.Blog_Post, name="post"),
+	path("post/<slug:post>", views.Blog_Post, name="post"),
 ]
