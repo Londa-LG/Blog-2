@@ -1,20 +1,18 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Julies Blog | Posts
+Dashboard | Posts
 {% endblock title %}
 
 {% block content %}
-
 	{% for post in posts %}
 		<div class="post-card">
 			<img src="{{post.header_image}}" alt="post picture" />	
 			<div>
-				<a href="{{post.get_absolute_url}}"><h3>{{ post.title }}</h3></a>	
+				<a href="{% url 'Dashboard:admin-edit-post' post.slug %}"><h3>{{ post.title }}</h3></a>	
 				<p>{{ post.summary }}</p>
-				<a href="{{post.get_absolute_url}}">Read More</a>
+				<a href="{% url 'Dashboard:admin-edit-post' post.slug %}">Edit Post</a>
 			</div>
 		</div>		
 	{% endfor %}
-
 {% endblock content %}

@@ -18,10 +18,13 @@ from django.contrib import admin
 from django.urls import path, include
 from adminDashboard import views
 
+app_name = "Dashboard"
+
 urlpatterns = [
+	path("login/", views.Login, name="admin-login"),
+	path("logout/", views.Logout, name="admin-logout"),
 	path("", views.Dashboard, name="admin-dashboard"),
 	path("posts/", views.Posts, name="admin-posts"),
-	path("editpost/", views.Edit_Post, name="admin-edit-post"),
-	path("users/", views.Users, name="admin-users"),
-	path("edituser/", views.Edit_User, name="admin-edit-user"),
+	path("editpost/<slug:post>/", views.Edit_Post, name="admin-edit-post"),
+	path("createpost/", views.Create_Post, name="admin-create-post"),
 ]
