@@ -17,14 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from adminDashboard import views
+from django.contrib.auth import views as auth_views
 
 app_name = "Dashboard"
 
 urlpatterns = [
-	path("login/", views.Login, name="admin-login"),
+	path("login/", auth_views.LoginView.as_view(template_name="login.html",next_page="/admin/"), name="admin-login"),
 	path("logout/", views.Logout, name="admin-logout"),
-	path("", views.Dashboard, name="admin-dashboard"),
-	path("posts/", views.Posts, name="admin-posts"),
+	path("", views.Posts, name="admin-posts"),
 	path("editpost/<slug:post>/", views.Edit_Post, name="admin-edit-post"),
 	path("createpost/", views.Create_Post, name="admin-create-post"),
 ]

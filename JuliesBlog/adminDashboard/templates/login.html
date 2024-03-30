@@ -1,14 +1,12 @@
-{% extends 'base.html' %}
+{% extends 'adminBase.html' %}
 
 {% block title %}
 Dashboard | Login
 {% endblock title %}
 
 {% block content %}
-{% if messages %}
-    {% for message in messages %}
-      <script>M.toast({html: "{{message}}", displayLength:2000});</script>
-    {% endfor %}
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
 {% endif %}
 <div class="container">
     <section class="card">
@@ -17,7 +15,6 @@ Dashboard | Login
                 {% csrf_token %}
                 {{ form.as_p }}
                 <button type="submit" class="btn blue">Login</button>
-                <h5>Don't have an account? <a href="{% url 'User:register' %}">Register</a></h5>
             </form>
         </div>
     </section>

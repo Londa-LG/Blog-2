@@ -1,10 +1,11 @@
-{% extends 'base.html' %}
+{% extends 'adminBase.html' %}
 
 {% block title %}
 Dashboard | Posts
 {% endblock title %}
 
 {% block content %}
+<a href={% url "Dashboard:admin-create-post"%}>Create new post<a/>
 	{% for post in posts %}
 		<div class="post-card">
 			<img src="{{post.header_image}}" alt="post picture" />	

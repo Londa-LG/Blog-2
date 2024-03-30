@@ -1,38 +1,14 @@
 from blog.models import Post
-from django.urls import reverse
 from .forms import New_Post_Form
-from django.http import HttpResponse
-from django.contrib.auth.forms import AuthenticationForm	
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 
 
-def Login(request):
-    if request.method == "POST":
-        form = AuthenticationForm(request, request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                messages.info(request, f"You are now logged in as {username}")
-                return redirect("Status/")
-            else:
-                messages.error(request, "Invalid username or password.")
-        else:
-            messages.error(request, "Invalid username or password.")
-    form = AuthenticationForm()
-    content = {'form': form}
-    return render(request, 'login.html', content)
-
+@login_required(login_url="/admin/login/")
 def Logout(request):
     logout(request)
-    messages.info(request,'Logout successful')
-    return redirect('admin-dashboard')
-
-def Dashboard(request):
-	return HttpResponse("<h1>admin homepage</h1>")
+    return redirect("Dashboard:admin-login")
 
 def Posts(request):
 	posts = Post.objects.all()
@@ -44,7 +20,15 @@ def Posts(request):
 
 def Edit_Post(request,post):
 	post_obj = get_object_or_404(Post, slug=post)
-	post_form = New_Post_Form(instance=post_obj)
+
+	if request.method == "POST":
+		form = New_Post_Form(request.POST)
+		if form.is_valid():
+			changes = New_Post_Form(request.POST, instance=post_obj)
+			changes.save()
+			return redirect("Dashboard:admin-posts")
+	else:
+		post_form = New_Post_Form(instance=post_obj)
 
 	context={
 		"form": post_form
@@ -52,7 +36,14 @@ def Edit_Post(request,post):
 	return render(request,"editpost.html",context)
 
 def Create_Post(request):
-	post_form = New_Post_Form(request.POST or None)
+	if request.method == "POST":
+		form = New_Post_Form(request.POST)
+		if form.is_valid():
+			newPost = New_Post_Form(request.POST)
+			newPost.save()
+			return redirect("Dashboard:admin-posts")
+	else:
+		post_form = New_Post_Form()
 
 	context = {
 		'form': post_form
